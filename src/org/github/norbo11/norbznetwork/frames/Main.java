@@ -31,9 +31,17 @@ public class Main {
     private static JMenuItem itemClearAll;
     private static JMenuItem itemDijkstras;
     private static JFrame algorithmFrame;
+    private static JFrame editDistanceFrame;
     private static JTextArea textArea;
     
-    
+    public static JFrame getEditDistanceFrame() {
+        return editDistanceFrame;
+    }
+
+    public static void setEditDistanceFrame(JFrame editDistanceFrame) {
+        Main.editDistanceFrame = editDistanceFrame;
+    }
+
     public static JTextArea getTextPane() {
         return textArea;
     }
@@ -91,27 +99,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        initialize();
-        frame.setVisible(true);
-    }
-    
-    public static JFrame getFrame() {
-        return frame;
-    }
-    
-    public static void setFrame(JFrame frame) {
-        Main.frame = frame;
-    }
-
-    public static NetworkPanel getNetworkPanel() {
-        return Main.networkPanel;
-    }
-  
-    public static void setNetworkPanel(NetworkPanel networkPanel) {
-        Main.networkPanel = networkPanel;
-    }
-
-    private static void initialize() {
         frame = new JFrame();
         frame.setBounds(100, 100, 100 + WINDOW_WIDTH, 100 + WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -166,6 +153,25 @@ public class Main {
         //Redirect standard output to text pane
         PrintStream output = new PrintStream(new CustomOutputStream());
         System.setOut(output);
+        
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    
+    public static JFrame getFrame() {
+        return frame;
+    }
+    
+    public static void setFrame(JFrame frame) {
+        Main.frame = frame;
+    }
+
+    public static NetworkPanel getNetworkPanel() {
+        return Main.networkPanel;
+    }
+  
+    public static void setNetworkPanel(NetworkPanel networkPanel) {
+        Main.networkPanel = networkPanel;
     }
 
     public static void setAlgorithmFrame(DijkstrasFrame algorithmFrame) {

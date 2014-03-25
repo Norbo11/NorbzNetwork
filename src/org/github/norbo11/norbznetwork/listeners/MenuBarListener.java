@@ -18,7 +18,6 @@ public class MenuBarListener implements ActionListener {
             Main.getArcsTab().updateArcs();
         }
         
-        
         if (e.getSource() == Main.getItemDijkstras())
         {
             Main.setAlgorithmFrame(new DijkstrasFrame());

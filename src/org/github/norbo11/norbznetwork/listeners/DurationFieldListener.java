@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTextField;
 
-import org.github.norbo11.norbznetwork.util.Arc;
+import org.github.norbo11.norbznetwork.network.Arc;
 
 public class DurationFieldListener implements ActionListener {
 
@@ -17,7 +17,7 @@ public class DurationFieldListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        arc.setDuration(Integer.valueOf(((JTextField) e.getSource()).getText()));
+        arc.setWeight(Integer.valueOf(((JTextField) e.getSource()).getText()));
     }
 
 }

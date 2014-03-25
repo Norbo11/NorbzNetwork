@@ -1,4 +1,4 @@
-package org.github.norbo11.norbznetwork.util;
+package org.github.norbo11.norbznetwork.network;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -15,17 +15,37 @@ public class Node {
     public static final int DIAMETER = 15;
     public static final int CLICKABLE_DIAMETER = 30;
     public static final Color NODE_COLOR = Color.DARK_GRAY;
-    public static final Color NODE_TEXT_COLOR = Color.BLACK;
     public static final Color NODE_PATH_COLOR = Color.RED;
     
     private char id;
-    private double x;
-    private double y;
+    private Point point;
     private JPanel panel;
     private boolean mouseOver;
     private int pLabel = -1;
     private int tLabel = -1;
+    private Node bestFrom = null;
+    private Color color = NODE_COLOR;
     
+    public Point getPoint() {
+        return point;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Node getBestFrom() {
+        return bestFrom;
+    }
+
+    public void setBestFrom(Node bestFrom) {
+        this.bestFrom = bestFrom;
+    }
+
     public int getpLabel() {
         return pLabel;
     }
@@ -50,35 +70,13 @@ public class Node {
         this.mouseOver = mouseOver;
     }
 
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public Node(char id, Point location)
-    {
-        this(id, location.getX(), location.getY());
-    }
-    
-    public Node(char id, double x, double y)
+    public Node(char id, Point point)
     {
         this.id = id;
-        this.x = x;
-        this.y = y;
+        this.point = new Point(point);
         
         panel = new JPanel();
-        panel.setBounds((int) x - CLICKABLE_DIAMETER / 2, (int) y - CLICKABLE_DIAMETER / 2, CLICKABLE_DIAMETER, CLICKABLE_DIAMETER);
+        panel.setBounds((int) point.x - CLICKABLE_DIAMETER / 2, (int) point.y - CLICKABLE_DIAMETER / 2, CLICKABLE_DIAMETER, CLICKABLE_DIAMETER);
         panel.addMouseListener(new NodeMouseListener(this));
         Main.getNetworkPanel().add(panel);
     }
@@ -106,13 +104,11 @@ public class Node {
             height = CLICKABLE_DIAMETER;
         }
         
-        x = this.x - width / 2;
-        y = this.y - height / 2;
+        x = point.x - width / 2;
+        y = point.y - height / 2;
         
-        g.setPaint(NODE_TEXT_COLOR);
-        g.drawString(String.valueOf(id), (int) this.x - 3, (int) y - 4);
-        
-        g.setPaint(NODE_COLOR);
+        g.setPaint(color);
+        g.drawString(String.valueOf(id), (int) point.x - 3, (int) y - 4);
         g.fill(new Ellipse2D.Double(x, y, width, height));
     }
 

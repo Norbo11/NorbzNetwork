@@ -4,8 +4,11 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.event.MouseInputAdapter;
 
+import org.github.norbo11.norbznetwork.frames.EditDistanceFrame;
+import org.github.norbo11.norbznetwork.frames.Main;
 import org.github.norbo11.norbznetwork.main.NetworkManager;
-import org.github.norbo11.norbznetwork.util.Arc;
+import org.github.norbo11.norbznetwork.network.Arc;
+import org.github.norbo11.norbznetwork.util.GUIHelper;
 
 public class NetworkMouseListener extends MouseInputAdapter {
 
@@ -25,7 +28,20 @@ public class NetworkMouseListener extends MouseInputAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1)
-            NetworkManager.addNode(e.getPoint());
+        {
+            boolean intersecting = false;
+            for (Arc arc : NetworkManager.getArcs())
+            {
+                intersecting = GUIHelper.IsIntersecting(arc.getPoint1(), arc.getPoint2(), e.getPoint(), Arc.CLICKABLE_WIDTH);
+                if (intersecting) 
+                {
+                    Main.setEditDistanceFrame(new EditDistanceFrame(arc));
+                    break;
+                }
+            }
+            if (!intersecting) NetworkManager.addNode(e.getPoint());
+        }
+        
         if (e.getButton() == MouseEvent.BUTTON3)
         {
             NetworkManager.setCurrentDrawArc(null);
@@ -43,8 +59,13 @@ public class NetworkMouseListener extends MouseInputAdapter {
         
         if (currentArc != null)
         {
-            currentArc.setX2(e.getX());
-            currentArc.setY2(e.getY());
+            currentArc.getPoint2().setLocation(e.getPoint());
+        }
+        
+        for (Arc arc : NetworkManager.getArcs())
+        {
+            if (GUIHelper.IsIntersecting(arc.getPoint1(), arc.getPoint2(), e.getPoint(), Arc.CLICKABLE_WIDTH)) arc.setMouseOver(true);
+            else arc.setMouseOver(false);
         }
      }
 

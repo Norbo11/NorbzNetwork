@@ -1,6 +1,5 @@
 package org.github.norbo11.norbznetwork.frames;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -10,7 +9,7 @@ import javax.swing.JLabel;
 
 import org.github.norbo11.norbznetwork.listeners.AlgorithmFrameListener;
 import org.github.norbo11.norbznetwork.main.NetworkManager;
-import org.github.norbo11.norbznetwork.util.Node;
+import org.github.norbo11.norbznetwork.network.Node;
 
 public class DijkstrasFrame extends JFrame {
 
@@ -46,7 +45,7 @@ public class DijkstrasFrame extends JFrame {
         lblTo.setBounds(10, 36, 111, 14);
         getContentPane().add(lblTo);
         
-        ArrayList<Node> nodes = NetworkManager.getNodes();
+        Vector<Node> nodes = NetworkManager.getNodes();
         Vector<Character> v = new Vector<Character>();
         for (Node node : nodes)
         {
@@ -65,6 +64,8 @@ public class DijkstrasFrame extends JFrame {
         btnConfirm.setBounds(10, 75, 208, 23);
         btnConfirm.addActionListener(new AlgorithmFrameListener());
         getContentPane().add(btnConfirm);
+        
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 }

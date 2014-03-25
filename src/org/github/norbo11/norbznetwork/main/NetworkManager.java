@@ -1,16 +1,15 @@
 package org.github.norbo11.norbznetwork.main;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Vector;
 
 import org.github.norbo11.norbznetwork.frames.Main;
-import org.github.norbo11.norbznetwork.util.Arc;
-import org.github.norbo11.norbznetwork.util.Node;
+import org.github.norbo11.norbznetwork.network.Arc;
+import org.github.norbo11.norbznetwork.network.Node;
 
 public class NetworkManager {
-    private static ArrayList<Node> nodes = new ArrayList<Node>();
-    private static ArrayList<Arc> arcs = new ArrayList<Arc>();
+    private static Vector<Node> nodes = new Vector<Node>();
+    private static Vector<Arc> arcs = new Vector<Arc>();
     private static Arc currentDrawArc = null;
 
     public static Arc getCurrentDrawArc() {
@@ -21,19 +20,19 @@ public class NetworkManager {
         NetworkManager.currentDrawArc = currentDrawArc;
     }
 
-    public static ArrayList<Arc> getArcs() {
+    public static Vector<Arc> getArcs() {
         return arcs;
     }
 
-    public static void setArcs(ArrayList<Arc> arcs) {
+    public static void setArcs(Vector<Arc> arcs) {
         NetworkManager.arcs = arcs;
     }
 
-    public static ArrayList<Node> getNodes() {
+    public static Vector<Node> getNodes() {
         return nodes;
     }
 
-    public static void setNodes(ArrayList<Node> nodes) {
+    public static void setNodes(Vector<Node> nodes) {
         NetworkManager.nodes = nodes;
     }
 
@@ -41,15 +40,15 @@ public class NetworkManager {
         nodes.add(new Node(Node.getNextId(), point));
     }
 
-    public static void connectNode(Node node, double x2, double y2) {
-        currentDrawArc = new Arc(node, x2, y2);
+    public static void connectNode(Node node) {
+        currentDrawArc = new Arc(node);
     }
     
-    public static void connectCurrentArc(Node node, double x2, double y2) {
+    public static void connectCurrentArc(Node node) {
         currentDrawArc.setEndNode(node);
         arcs.add(currentDrawArc);
         Main.getArcsTab().updateArcs();
-        connectNode(node, x2, y2);
+        connectNode(node);
     }
 
     public static Node getNodeById(char id) {
@@ -74,7 +73,8 @@ public class NetworkManager {
     
     public static int getDuration(Node node1, Node node2)
     {
-        return getArcByNodes(node1, node2).getDuration();
+        Arc arc = getArcByNodes(node1, node2);
+        return arc != null ? arc.getWeight(): 0;
     }
     
     public static Vector<Node> getAllConnectedNodes(Node node)
@@ -118,23 +118,41 @@ public class NetworkManager {
         return nodes;
     }
 
-    public static void resetAllLabels() {
+    public static void resetAllNodes() {
         for (Node node : nodes)
         {
             node.setpLabel(-1);
             node.settLabel(-1);
+            node.setColor(Node.NODE_COLOR);
         }
     }
 
     public static void drawPath(Vector<Node> path) {
         int i = 0;
-        //A, E, F, D, C
-        //0, 1, 2
-        //AB, BC, CD
         for (i = 0; i <= path.size() - 2; i++)
         {
-            System.out.println("changing color of arc" + getArcByNodes(path.get(i), path.get(i + 1)).getDuration());
-            getArcByNodes(path.get(i), path.get(i + 1)).setColor(Node.NODE_PATH_COLOR);
+            Node node1 = path.get(i);
+            Node node2 = path.get(i + 1);
+            getArcByNodes(node1, node2).setColor(Node.NODE_PATH_COLOR);
+            node1.setColor(Node.NODE_PATH_COLOR);
+            node2.setColor(Node.NODE_PATH_COLOR);
+        }
+    }
+    
+    public static int pathWeight(Vector<Node> path)
+    {
+        int duration = 0;
+        for (int i = 0; i < path.size() - 1; i++)
+        {
+            duration += NetworkManager.getDuration(path.get(i), path.get(i + 1));
+        }
+        return duration;
+    }
+
+    public static void resetAllArcs() {
+        for (Arc arc : arcs)
+        {
+            arc.setColor(Arc.ARC_COLOR);
         }
     }
 }

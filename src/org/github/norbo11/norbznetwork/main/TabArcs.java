@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.github.norbo11.norbznetwork.listeners.DurationFieldListener;
-import org.github.norbo11.norbznetwork.util.Arc;
+import org.github.norbo11.norbznetwork.network.Arc;
 
 public class TabArcs extends JPanel {
 
@@ -32,6 +32,8 @@ public class TabArcs extends JPanel {
         container.add(field);
         
         GridBagConstraints constraints = new GridBagConstraints();
+        constraints.weightx = 1;
+        constraints.weighty = 0;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         this.layout.setConstraints(container, constraints);

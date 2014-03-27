@@ -30,6 +30,7 @@ public class Main {
     private static TabNodes nodesTab;
     private static JMenuItem itemClearAll;
     private static JMenuItem itemDijkstras;
+    private static JMenuItem itemPrims;
     private static JFrame algorithmFrame;
     private static JFrame editDistanceFrame;
     private static JTextArea textArea;
@@ -66,6 +67,8 @@ public class Main {
         Main.itemDijkstras = itemDijkstras;
     }
 
+    
+    
     public static JMenuItem getItemClearAll() {
         return itemClearAll;
     }
@@ -119,6 +122,10 @@ public class Main {
         itemDijkstras = new JMenuItem("Dijkstra's Shortest Route");
         itemDijkstras.addActionListener(menuBarListener);
         menuAlgorithms.add(itemDijkstras);
+        
+        itemPrims = new JMenuItem("Prim's Minimal Spanning Tree");
+        itemPrims.addActionListener(menuBarListener);
+        menuAlgorithms.add(itemPrims);
         menuBar.add(menuAlgorithms);
 
         JMenu menuHelp = new JMenu("Help");
@@ -176,5 +183,15 @@ public class Main {
 
     public static void setAlgorithmFrame(DijkstrasFrame algorithmFrame) {
         Main.algorithmFrame = algorithmFrame;
+    }
+
+    public static JMenuItem getItemPrims()
+    {
+        return itemPrims;
+    }
+
+    public static void setItemPrims(JMenuItem itemPrims)
+    {
+        Main.itemPrims = itemPrims;
     }
 }

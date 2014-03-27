@@ -3,6 +3,7 @@ package org.github.norbo11.norbznetwork.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.github.norbo11.norbznetwork.algorithms.Prims;
 import org.github.norbo11.norbznetwork.frames.DijkstrasFrame;
 import org.github.norbo11.norbznetwork.frames.Main;
 import org.github.norbo11.norbznetwork.main.NetworkManager;
@@ -21,6 +22,11 @@ public class MenuBarListener implements ActionListener {
         if (e.getSource() == Main.getItemDijkstras())
         {
             Main.setAlgorithmFrame(new DijkstrasFrame());
+        }
+        
+        if (e.getSource() == Main.getItemPrims())
+        {
+            Prims.getMinimumSpanningTree();
         }
         
     }

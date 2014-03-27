@@ -26,10 +26,12 @@ public class AlgorithmFrameListener implements ActionListener {
             Node endNode = (Node) NetworkManager.getNodeById((Character) DijkstrasFrame.getToBox().getSelectedItem());
             Vector<Node> path = Dijkstras.getShortestPath(startNode, endNode);
             
-            if (path != null) System.out.println("Shortest path from " + startNode + " to " + endNode + ": " + path + " = " + NetworkManager.pathWeight(path) + " total weight.");
-            else System.out.println("Shortest path from " + startNode + " to " + endNode + ": Unreachable!");
+            if (path != null) 
+            {
+                System.out.println("Shortest path from " + startNode + " to " + endNode + ": " + path + " = " + NetworkManager.pathWeight(path) + " total weight.");
+                NetworkManager.drawPath(path);
+            } else System.out.println("Shortest path from " + startNode + " to " + endNode + ": Unreachable!");
 
-            NetworkManager.drawPath(path);
         }
     }
 

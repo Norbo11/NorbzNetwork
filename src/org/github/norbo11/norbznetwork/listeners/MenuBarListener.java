@@ -7,6 +7,7 @@ import org.github.norbo11.norbznetwork.algorithms.Prims;
 import org.github.norbo11.norbznetwork.frames.DijkstrasFrame;
 import org.github.norbo11.norbznetwork.frames.Main;
 import org.github.norbo11.norbznetwork.main.NetworkManager;
+import org.github.norbo11.norbznetwork.network.Network;
 
 public class MenuBarListener implements ActionListener {
 
@@ -26,7 +27,11 @@ public class MenuBarListener implements ActionListener {
         
         if (e.getSource() == Main.getItemPrims())
         {
-            Prims.getMinimumSpanningTree();
+            
+            Network network = Prims.getMinimumSpanningTree();
+            network.draw();
+            Main.getArcsTab().updateArcs();
+            System.out.println("Minimum spanning tree weight: " + network.getWeight());
         }
         
     }

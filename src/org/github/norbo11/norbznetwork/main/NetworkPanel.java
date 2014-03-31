@@ -35,6 +35,7 @@ public class NetworkPanel extends JPanel {
             arc.draw(g);
         }
         
+        revalidate();
         repaint();
       }
       

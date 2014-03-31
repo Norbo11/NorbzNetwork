@@ -5,31 +5,55 @@ import java.util.Vector;
 import org.github.norbo11.norbznetwork.main.NetworkManager;
 import org.github.norbo11.norbznetwork.network.Arc;
 import org.github.norbo11.norbznetwork.network.Node;
+import org.github.norbo11.norbznetwork.network.Network;
 
 public class Prims {
     private static Vector<Node> minNodes = null;
     private static Vector<Arc> minArcs = null;
-    private static Vector<Node> nodes = null;
+    private static Network network = null;
+    static int i = 0;
     
-    public static void getMinimumSpanningTree()
+    public static Network getMinimumSpanningTree()
     {
         minNodes = new Vector<Node>();
         minArcs = new Vector<Arc>();
-        nodes = NetworkManager.getNodes();
-        minNodes.add(nodes.get(0));
+        minNodes.add(NetworkManager.getNodes().get(0));
+        
+        
+        network = new Network(minNodes, minArcs);
         
         formTree();
-        drawTree();
+        
+        return network;
+    }
+    
+    private static Vector<Arc> getArcsInMinTree()
+    {
+        Vector<Arc> arcs = new Vector<Arc>();
+        
+        for (Node node : minNodes)
+        {
+            Vector<Arc> connectedArcs = NetworkManager.getAllConnectedArcs(node);
+            for (Arc connectedArc : connectedArcs)
+            {
+                if (!arcs.contains(connectedArc) && (!minNodes.contains(connectedArc.getStartNode()) || !minNodes.contains(connectedArc.getEndNode()))) arcs.add(connectedArc);
+            }
+        }
+        
+        return arcs;
     }
     
     private static Arc getMinArc()
     {
-        Vector<Arc> arcs = NetworkManager.getArcs();
+        Vector<Arc> arcs = getArcsInMinTree();
+        if (arcs.size() == 0) return null;
+        
         Arc smallest = arcs.get(0);
         for (Arc arc : arcs)
         {
             if (!minArcs.contains(arc) && arc.getWeight() < smallest.getWeight()) smallest = arc;
         }
+        
         return smallest;
     }
     
@@ -37,28 +61,28 @@ public class Prims {
     {
         Arc smallest = getMinArc();
         
-        if (!minNodes.contains(smallest.getStartNode()) && !minNodes.contains(smallest.getEndNode()))
+        if (smallest == null) return;
+        
+        minArcs.add(smallest);
+        
+        if (!minNodes.contains(smallest.getStartNode()))
         {
-            minArcs.add(smallest);
             minNodes.add(smallest.getStartNode());
+        }
+        
+        if (!minNodes.contains(smallest.getEndNode()))
+        {
             minNodes.add(smallest.getEndNode());
         }
         
-        System.out.println("Min arcs: " + minArcs);
-        System.out.println("Min nodes: " + minNodes);
-        
-        if (!isSpanning()) formTree();
+        if (!isSpanning()) 
+        {
+            formTree();
+        }
     }
     
     private static boolean isSpanning()
     {
-        return (NetworkManager.getNodes().equals(minNodes));
-    }
-    
-    private static void drawTree()
-    {
-        Vector<Arc> arcs = NetworkManager.getArcs();
-        arcs.clear();
-        arcs.addAll(minArcs);
+        return minNodes.containsAll(NetworkManager.getNodes());
     }
 }

@@ -1,7 +1,6 @@
 package org.github.norbo11.norbznetwork.frames;
 
 import java.awt.Color;
-import java.io.PrintStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -17,7 +16,6 @@ import org.github.norbo11.norbznetwork.listeners.NetworkMouseListener;
 import org.github.norbo11.norbznetwork.main.NetworkPanel;
 import org.github.norbo11.norbznetwork.main.TabArcs;
 import org.github.norbo11.norbznetwork.main.TabNodes;
-import org.github.norbo11.norbznetwork.util.CustomOutputStream;
 
 public class Main {
 
@@ -156,10 +154,6 @@ public class Main {
         textArea = new JTextArea();
         textArea.setEditable(false);
         scrollPane.setViewportView(textArea);
-        
-        //Redirect standard output to text pane
-        PrintStream output = new PrintStream(new CustomOutputStream());
-        System.setOut(output);
         
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

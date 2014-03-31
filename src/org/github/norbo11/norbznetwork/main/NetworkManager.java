@@ -139,7 +139,7 @@ public class NetworkManager {
         }
     }
     
-    public static int pathWeight(Vector<Node> path)
+    public static int getPathWeight(Vector<Node> path)
     {
         int duration = 0;
         for (int i = 0; i < path.size() - 1; i++)
@@ -154,5 +154,16 @@ public class NetworkManager {
         {
             arc.setColor(Arc.ARC_COLOR);
         }
+    }
+
+    public static Vector<Arc> getAllConnectedArcs(Node node) {
+        Vector<Arc> connectedArcs = new Vector<Arc>();
+        
+        for (Arc arc : arcs)
+        {
+            if (arc.getStartNode() == node || arc.getEndNode() == node) connectedArcs.add(arc);
+        }
+        
+        return connectedArcs;
     }
 }

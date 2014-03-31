@@ -28,10 +28,9 @@ public class AlgorithmFrameListener implements ActionListener {
             
             if (path != null) 
             {
-                System.out.println("Shortest path from " + startNode + " to " + endNode + ": " + path + " = " + NetworkManager.pathWeight(path) + " total weight.");
+                System.out.println("Shortest path from " + startNode + " to " + endNode + ": " + path + " = " + NetworkManager.getPathWeight(path) + " total weight.");
                 NetworkManager.drawPath(path);
             } else System.out.println("Shortest path from " + startNode + " to " + endNode + ": Unreachable!");
-
         }
     }
 

@@ -26,19 +26,35 @@ public class Main {
     private static JTabbedPane tabbedPane;
     private static TabArcs arcsTab;
     private static TabNodes nodesTab;
-    private static JMenuItem itemClearAll;
-    private static JMenuItem itemDijkstras;
-    private static JMenuItem itemPrims;
-    private static JFrame algorithmFrame;
-    private static JFrame editDistanceFrame;
     private static JTextArea textArea;
+    private static JScrollPane scrollPane;
+ 
+    public static enum MenuItem {
+        CLEARALL("Clear All"),
+        DIJKSTRAS("Dijkstra's Shortest Route"),
+        PRIMS("Prim's Minimal Spanning Tree");
+        
+        private String name = "";
+        
+        private MenuItem(String name)
+        {
+            this.name = name;
+        }
+
+        public String toString()
+        {
+            return name;
+        }
+    }
     
-    public static JFrame getEditDistanceFrame() {
-        return editDistanceFrame;
+    public static JScrollPane getScrollPane()
+    {
+        return scrollPane;
     }
 
-    public static void setEditDistanceFrame(JFrame editDistanceFrame) {
-        Main.editDistanceFrame = editDistanceFrame;
+    public static void setScrollPane(JScrollPane scrollPane)
+    {
+        Main.scrollPane = scrollPane;
     }
 
     public static JTextArea getTextPane() {
@@ -47,32 +63,6 @@ public class Main {
 
     public static void setTextArea(JTextArea textArea) {
         Main.textArea = textArea;
-    }
-
-    public static JFrame getAlgorithmFrame() {
-        return algorithmFrame;
-    }
-
-    public static void setAlgorithmFrame(JFrame algorithmFrame) {
-        Main.algorithmFrame = algorithmFrame;
-    }
-
-    public static JMenuItem getItemDijkstras() {
-        return itemDijkstras;
-    }
-
-    public static void setItemDijkstras(JMenuItem itemDijkstras) {
-        Main.itemDijkstras = itemDijkstras;
-    }
-
-    
-    
-    public static JMenuItem getItemClearAll() {
-        return itemClearAll;
-    }
-
-    public static void setItemClearAll(JMenuItem itemClearAll) {
-        Main.itemClearAll = itemClearAll;
     }
 
     public static JTabbedPane getTabbedPane() {
@@ -111,17 +101,17 @@ public class Main {
         frame.setJMenuBar(menuBar);
 
         JMenu menuTools = new JMenu("Tools");
-        itemClearAll = new JMenuItem("Clear All");
+        JMenuItem itemClearAll = new JMenuItem(MenuItem.CLEARALL + "");
         itemClearAll.addActionListener(menuBarListener);
         menuTools.add(itemClearAll);
         menuBar.add(menuTools);
         
         JMenu menuAlgorithms = new JMenu("Algorithms");
-        itemDijkstras = new JMenuItem("Dijkstra's Shortest Route");
+        JMenuItem itemDijkstras = new JMenuItem(MenuItem.DIJKSTRAS + "");
         itemDijkstras.addActionListener(menuBarListener);
         menuAlgorithms.add(itemDijkstras);
         
-        itemPrims = new JMenuItem("Prim's Minimal Spanning Tree");
+        JMenuItem itemPrims = new JMenuItem(MenuItem.PRIMS + "");
         itemPrims.addActionListener(menuBarListener);
         menuAlgorithms.add(itemPrims);
         menuBar.add(menuAlgorithms);
@@ -147,7 +137,7 @@ public class Main {
         tabbedPane.addTab("Nodes", nodesTab);
         frame.getContentPane().add(tabbedPane);
         
-        JScrollPane scrollPane = new JScrollPane();
+        scrollPane = new JScrollPane();
         scrollPane.setBounds(10, 561, 1344, 190);
         frame.getContentPane().add(scrollPane);
         
@@ -173,19 +163,5 @@ public class Main {
   
     public static void setNetworkPanel(NetworkPanel networkPanel) {
         Main.networkPanel = networkPanel;
-    }
-
-    public static void setAlgorithmFrame(DijkstrasFrame algorithmFrame) {
-        Main.algorithmFrame = algorithmFrame;
-    }
-
-    public static JMenuItem getItemPrims()
-    {
-        return itemPrims;
-    }
-
-    public static void setItemPrims(JMenuItem itemPrims)
-    {
-        Main.itemPrims = itemPrims;
     }
 }

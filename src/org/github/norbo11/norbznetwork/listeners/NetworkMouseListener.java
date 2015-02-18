@@ -6,9 +6,10 @@ import javax.swing.event.MouseInputAdapter;
 
 import org.github.norbo11.norbznetwork.frames.EditDistanceFrame;
 import org.github.norbo11.norbznetwork.frames.Main;
-import org.github.norbo11.norbznetwork.network.Arc;
 import org.github.norbo11.norbznetwork.network.Network;
 import org.github.norbo11.norbznetwork.util.GUIUtil;
+//github.com/Norbo11/NorbzNetwork.git
+import org.github.norbo11.norbznetwork.network.Arc;
 
 public class NetworkMouseListener extends MouseInputAdapter {
 
@@ -36,7 +37,7 @@ public class NetworkMouseListener extends MouseInputAdapter {
                 intersecting = GUIUtil.IsIntersecting(arc.getPoint1(), arc.getPoint2(), e.getPoint(), Arc.CLICKABLE_WIDTH);
                 if (intersecting) 
                 {
-                    Main.setEditDistanceFrame(new EditDistanceFrame(arc));
+                    new EditDistanceFrame(arc);
                     break;
                 }
             }

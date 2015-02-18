@@ -4,14 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.JFileChooser;
-
 import org.github.norbo11.norbznetwork.algorithms.LongestPath;
 import org.github.norbo11.norbznetwork.algorithms.Prims;
 import org.github.norbo11.norbznetwork.frames.DijkstrasFrame;
 import org.github.norbo11.norbznetwork.frames.Main;
 import org.github.norbo11.norbznetwork.network.Network;
 import org.github.norbo11.norbznetwork.util.GraphUtil;
+import javax.swing.JFileChooser;
 
 public class MenuBarListener implements ActionListener {
 

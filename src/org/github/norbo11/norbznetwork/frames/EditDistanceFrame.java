@@ -27,8 +27,7 @@ public class EditDistanceFrame extends JFrame {
                 arc.setWeight(Integer.valueOf(textField.getText()));
             }
             
-            Main.getEditDistanceFrame().setVisible(false);
-            Main.setEditDistanceFrame(null);
+            dispose();
         }
         
     }

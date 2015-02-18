@@ -3,7 +3,8 @@ package org.github.norbo11.norbznetwork.listeners;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import org.github.norbo11.norbznetwork.main.NetworkManager;
+import org.github.norbo11.norbznetwork.frames.Main;
+import org.github.norbo11.norbznetwork.network.Network;
 import org.github.norbo11.norbznetwork.network.Node;
 
 public class NodeMouseListener implements MouseListener {
@@ -31,17 +32,19 @@ public class NodeMouseListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        Network network = Main.getCurrentNetwork();
+        
         if (e.getButton() == MouseEvent.BUTTON3)
         {
-            if (NetworkManager.getCurrentDrawArc() == null) NetworkManager.connectNode(node);
+            if (network.getCurrentDrawArc() == null) network.connectNode(node);
             else {
-                NetworkManager.connectCurrentArc(node);
+                network.connectCurrentArc(node);
             }
         }
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {   
     }
 
 }

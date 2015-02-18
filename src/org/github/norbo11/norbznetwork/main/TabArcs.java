@@ -1,53 +1,55 @@
 package org.github.norbo11.norbznetwork.main;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.FlowLayout;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.github.norbo11.norbznetwork.frames.Main;
 import org.github.norbo11.norbznetwork.listeners.DurationFieldListener;
 import org.github.norbo11.norbznetwork.network.Arc;
 
-public class TabArcs extends JPanel {
-
+public class TabArcs extends JScrollPane {
     private static final long serialVersionUID = 1L;
-    private GridBagLayout layout;
+    private static JPanel panel = new JPanel();
     
     public TabArcs()
     {
-        super();
-        layout = new GridBagLayout();
-        setLayout(layout);
+        super(panel);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     }
   
     public void addArc(Arc arc)
     {
         JLabel label = new JLabel(arc.toString());
+        
         JTextField field = new JTextField(3);
         field.addActionListener(new DurationFieldListener(arc));
-        JPanel container = new JPanel();
+        
+        JPanel container = new JPanel(new FlowLayout());
+        JButton deleteButton = new JButton("X");
+        deleteButton.setFocusable(false);
+        deleteButton.addActionListener(e -> {
+            Main.getCurrentNetwork().deleteArc(arc);
+        });
+
         container.add(label);
         container.add(field);
-        
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.weightx = 1;
-        constraints.weighty = 0;
-        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
-        constraints.gridwidth = GridBagConstraints.REMAINDER;
-        this.layout.setConstraints(container, constraints);
-        add(container);
+        container.add(deleteButton);
+        panel.add(container);
     }
 
     public void updateArcs() {
-        removeAll();
-        for (Arc arc : NetworkManager.getArcs())
+        panel.removeAll();
+        for (Arc arc : Main.getCurrentNetwork().getArcs())
         {
             addArc(arc);
         }
-        revalidate();
-        repaint();
+        panel.revalidate();
+        panel.repaint();
     }
-    
 }

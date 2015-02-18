@@ -1,39 +1,39 @@
 package org.github.norbo11.norbznetwork.algorithms;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
-import org.github.norbo11.norbznetwork.main.NetworkManager;
 import org.github.norbo11.norbznetwork.network.Arc;
-import org.github.norbo11.norbznetwork.network.Node;
 import org.github.norbo11.norbznetwork.network.Network;
+import org.github.norbo11.norbznetwork.network.Node;
 
 public class Prims {
-    private static Vector<Node> minNodes = null;
-    private static Vector<Arc> minArcs = null;
+    private static ArrayList<Node> minNodes = null;
+    private static ArrayList<Arc> minArcs = null;
     private static Network network = null;
-    static int i = 0;
     
-    public static Network getMinimumSpanningTree()
+    public static Network getMinimumSpanningTree(Network network)
     {
-        minNodes = new Vector<Node>();
-        minArcs = new Vector<Arc>();
-        minNodes.add(NetworkManager.getNodes().get(0));
+        Prims.network = network;
+        
+        minNodes = new ArrayList<Node>();
+        minArcs = new ArrayList<Arc>();
+        minNodes.add(network.getNodes().get(0));
         
         
-        network = new Network(minNodes, minArcs);
+        network = new Network(minNodes, minArcs, network.getFilename());
         
         formTree();
         
         return network;
     }
     
-    private static Vector<Arc> getArcsInMinTree()
+    private static ArrayList<Arc> getArcsInMinTree()
     {
-        Vector<Arc> arcs = new Vector<Arc>();
+        ArrayList<Arc> arcs = new ArrayList<Arc>();
         
         for (Node node : minNodes)
         {
-            Vector<Arc> connectedArcs = NetworkManager.getAllConnectedArcs(node);
+            ArrayList<Arc> connectedArcs = network.getAllConnectedArcs(node);
             for (Arc connectedArc : connectedArcs)
             {
                 if (!arcs.contains(connectedArc) && (!minNodes.contains(connectedArc.getStartNode()) || !minNodes.contains(connectedArc.getEndNode()))) arcs.add(connectedArc);
@@ -45,7 +45,7 @@ public class Prims {
     
     private static Arc getMinArc()
     {
-        Vector<Arc> arcs = getArcsInMinTree();
+        ArrayList<Arc> arcs = getArcsInMinTree();
         if (arcs.size() == 0) return null;
         
         Arc smallest = arcs.get(0);
@@ -83,6 +83,6 @@ public class Prims {
     
     private static boolean isSpanning()
     {
-        return minNodes.containsAll(NetworkManager.getNodes());
+        return minNodes.containsAll(network.getNodes());
     }
 }

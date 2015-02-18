@@ -2,12 +2,12 @@ package org.github.norbo11.norbznetwork.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.github.norbo11.norbznetwork.algorithms.Dijkstras;
 import org.github.norbo11.norbznetwork.frames.DijkstrasFrame;
 import org.github.norbo11.norbznetwork.frames.Main;
-import org.github.norbo11.norbznetwork.main.NetworkManager;
+import org.github.norbo11.norbznetwork.network.Network;
 import org.github.norbo11.norbznetwork.network.Node;
 
 public class AlgorithmFrameListener implements ActionListener {
@@ -19,18 +19,20 @@ public class AlgorithmFrameListener implements ActionListener {
             Main.getAlgorithmFrame().setVisible(false);
             Main.setAlgorithmFrame(null);
             
-            NetworkManager.resetAllArcs();
-            NetworkManager.resetAllNodes();
+            Network network = Main.getCurrentNetwork();
             
-            Node startNode = (Node) NetworkManager.getNodeById((Character) DijkstrasFrame.getFromBox().getSelectedItem());
-            Node endNode = (Node) NetworkManager.getNodeById((Character) DijkstrasFrame.getToBox().getSelectedItem());
-            Vector<Node> path = Dijkstras.getShortestPath(startNode, endNode);
+            network.resetAllArcs();
+            network.resetAllNodes();
             
+            Node startNode = (Node) network.getNodeById((String) DijkstrasFrame.getFromBox().getSelectedItem());
+            Node endNode = (Node) network.getNodeById((String) DijkstrasFrame.getToBox().getSelectedItem());
+            ArrayList<Node> path = Dijkstras.getShortestPath(network, startNode, endNode);
+
             if (path != null) 
             {
-                System.out.println("Shortest path from " + startNode + " to " + endNode + ": " + path + " = " + NetworkManager.getPathWeight(path) + " total weight.");
-                NetworkManager.drawPath(path);
-            } else System.out.println("Shortest path from " + startNode + " to " + endNode + ": Unreachable!");
+                Main.writeText("Shortest path from " + startNode + " to " + endNode + ": " + path + " = " + network.getPathWeight(path) + " total weight.");
+                network.drawPath(path);
+            } else Main.writeText("Shortest path from " + startNode + " to " + endNode + ": Unreachable!");
         }
     }
 

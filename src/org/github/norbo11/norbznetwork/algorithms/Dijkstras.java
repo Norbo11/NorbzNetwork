@@ -1,20 +1,25 @@
 package org.github.norbo11.norbznetwork.algorithms;
 
 import java.util.Collections;
-import java.util.Vector;
+import java.util.ArrayList;
 
-import org.github.norbo11.norbznetwork.main.NetworkManager;
+import org.github.norbo11.norbznetwork.network.Network;
 import org.github.norbo11.norbznetwork.network.Node;
 
 public class Dijkstras {
 
-    public static Vector<Node> getShortestPath(Node startNode, Node endNode) 
-    {
-        Vector<Node> path = new Vector<Node>();
-
+    private static Network network = null;
+    
+    public static ArrayList<Node> getShortestPath(Network network, Node startNode, Node endNode) 
+    { 
+        Dijkstras.network = network;
+        ArrayList<Node> path = new ArrayList<Node>();
+        
         startNode.setpLabel(0);        
+        
         assignLabels(startNode, endNode);
         
+        //Unreachable
         if (endNode.getpLabel() == -1)
         {
             return null;
@@ -33,13 +38,13 @@ public class Dijkstras {
         return path;
     }
     
-    private static void assignLabels(Node startNode, final Node endNode) {
+    private static void assignLabels(Node startNode, final Node endNode) {        
         //Assign T-Labels to all nodes connected to startNode
-        for (Node node : NetworkManager.getAllConnectedNodes(startNode))
+        for (Node node : startNode.getNeighbouringNodes())
         {
             if (node.getpLabel() == -1)
             {
-                int newTLabel = (startNode.getpLabel() == -1 ? 0 : startNode.getpLabel()) + NetworkManager.getDuration(startNode, node);
+                int newTLabel = (startNode.getpLabel() == -1 ? 0 : startNode.getpLabel()) + network.getDuration(startNode, node);
                 
                 if (node.gettLabel() == -1 || newTLabel < node.gettLabel())
                 {
@@ -50,7 +55,7 @@ public class Dijkstras {
         }
         
         //Find smallest T-Label in the whole network
-        Vector<Node> nodes = NetworkManager.getNodesWithTLabels();
+        ArrayList<Node> nodes = network.getNodesWithTLabels();
         Node smallest = nodes.size() > 0 ? nodes.get(0) : null;
         for (Node node : nodes)
         {

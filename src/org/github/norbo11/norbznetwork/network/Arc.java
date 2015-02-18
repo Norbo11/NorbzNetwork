@@ -19,6 +19,26 @@ public class Arc {
     private Color color = ARC_COLOR;
     private boolean mouseOver;
     
+    public Arc(Node startNode)
+    {
+        this.startNode = startNode;
+        
+        this.point1 = new Point(startNode.getPoint());
+        this.point2 = new Point(startNode.getPoint());
+    }
+    
+    
+    public Arc(Node startNode, Node endNode, int weight)
+    {
+        this.startNode = startNode;
+        this.endNode = endNode;
+        this.weight = weight;
+        
+        this.point1 = new Point(startNode.getPoint());
+        this.point2 = new Point(endNode.getPoint());
+    }
+    
+    
     public boolean isMouseOver() {
         return mouseOver;
     }
@@ -52,14 +72,6 @@ public class Arc {
         point2.setLocation(endNode.getPoint());
     }
 
-    public Arc(Node startNode)
-    {
-        this.startNode = startNode;
-        
-        this.point1 = new Point(startNode.getPoint());
-        this.point2 = new Point(startNode.getPoint());
-    }
-    
     public Point getPoint1() {
         return point1;
     }
@@ -90,5 +102,12 @@ public class Arc {
     public String toString()
     {
         return getStartNode() + " to " + getEndNode();
+    }
+
+
+    public Node getNodeConnecting(Node node) {
+        if (node == getEndNode()) return getStartNode();
+        if (node == getStartNode()) return getEndNode();
+        return null;
     }
 }

@@ -1,21 +1,35 @@
 package org.github.norbo11.norbznetwork.frames;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.text.DefaultCaret;
 
 import org.github.norbo11.norbznetwork.listeners.MenuBarListener;
 import org.github.norbo11.norbznetwork.listeners.NetworkMouseListener;
+import org.github.norbo11.norbznetwork.listeners.WindowListener;
 import org.github.norbo11.norbznetwork.main.NetworkPanel;
 import org.github.norbo11.norbznetwork.main.TabArcs;
 import org.github.norbo11.norbznetwork.main.TabNodes;
+import org.github.norbo11.norbznetwork.network.Network;
+import org.github.norbo11.norbznetwork.util.ConfigUtil;
+import org.github.norbo11.norbznetwork.util.GraphUtil;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 public class Main {
 
@@ -26,13 +40,34 @@ public class Main {
     private static JTabbedPane tabbedPane;
     private static TabArcs arcsTab;
     private static TabNodes nodesTab;
-    private static JMenuItem itemClearAll;
-    private static JMenuItem itemDijkstras;
-    private static JMenuItem itemPrims;
+    private static JMenuItem itemClearAll, itemDijkstras, itemPrims, itemLongest, itemSaveGraph, itemLoadGraph;
     private static JFrame algorithmFrame;
     private static JFrame editDistanceFrame;
     private static JTextArea textArea;
+    private static JFreeChart chart;
+    private static XYSeries averageFitnessData, bestIndividualData;
+    private static Network currentNetwork;
     
+    public static JMenuItem getItemSaveGraph() {
+        return itemSaveGraph;
+    }
+
+    public static JMenuItem getItemLoadGraph() {
+        return itemLoadGraph;
+    }
+
+    public static XYSeries getBestIndividualData() {
+        return bestIndividualData;
+    }
+    
+    public static JTextArea getTextArea() {
+        return textArea;
+    }
+    
+    public static JMenuItem getItemLongest() {
+        return itemLongest;
+    }
+
     public static JFrame getEditDistanceFrame() {
         return editDistanceFrame;
     }
@@ -64,8 +99,6 @@ public class Main {
     public static void setItemDijkstras(JMenuItem itemDijkstras) {
         Main.itemDijkstras = itemDijkstras;
     }
-
-    
     
     public static JMenuItem getItemClearAll() {
         return itemClearAll;
@@ -100,16 +133,38 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        /*try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        } Uncomment for windows look and feel */
+        
+        /* Main window */
+        
         frame = new JFrame();
         frame.setBounds(100, 100, 100 + WINDOW_WIDTH, 100 + WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().setLayout(null);
-        frame.setTitle("Norbert's Networks");
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.setTitle("Norbert's Genetic Algorithms");
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH); //Maximise
+        frame.addWindowListener(new WindowListener());
+        
+        /* Menu Bar */
         
         JMenuBar menuBar = new JMenuBar();
         MenuBarListener menuBarListener = new MenuBarListener();
         frame.setJMenuBar(menuBar);
 
+        JMenu menuFile = new JMenu("File");
+        itemLoadGraph = new JMenuItem("Load graph");
+        itemLoadGraph.addActionListener(menuBarListener);
+        menuFile.add(itemLoadGraph);
+        
+        itemSaveGraph = new JMenuItem("Save graph");
+        itemSaveGraph.addActionListener(menuBarListener);
+        menuFile.add(itemSaveGraph);
+        menuBar.add(menuFile);
+        
         JMenu menuTools = new JMenu("Tools");
         itemClearAll = new JMenuItem("Clear All");
         itemClearAll.addActionListener(menuBarListener);
@@ -124,41 +179,68 @@ public class Main {
         itemPrims = new JMenuItem("Prim's Minimal Spanning Tree");
         itemPrims.addActionListener(menuBarListener);
         menuAlgorithms.add(itemPrims);
+        
+        itemLongest = new JMenuItem("Longest Path GA");
+        itemLongest.addActionListener(menuBarListener);
+        menuAlgorithms.add(itemLongest);        
         menuBar.add(menuAlgorithms);
+        
+        /* Network panel */
 
-        JMenu menuHelp = new JMenu("Help");
-        menuBar.add(menuHelp);
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel.setBorder(BorderFactory.createTitledBorder("Graph"));
         
         networkPanel = new NetworkPanel();
-        networkPanel.setLayout(null);
-        networkPanel.setBounds(10, 11, 1106, 539);
-        networkPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        
         NetworkMouseListener mouseListener = new NetworkMouseListener();
+
+        networkPanel.setPreferredSize(new Dimension(800, 0));
         networkPanel.addMouseListener(mouseListener);
         networkPanel.addMouseMotionListener(mouseListener);
-        frame.getContentPane().add(networkPanel);
+        leftPanel.add(networkPanel, BorderLayout.LINE_START);
         
-        tabbedPane = new JTabbedPane();
-        tabbedPane.setBounds(1129, 11, 225, 539);
+        tabbedPane = new JTabbedPane();  
+        tabbedPane.setPreferredSize(new Dimension(160, 0));
         arcsTab = new TabArcs();
         nodesTab = new TabNodes();
         tabbedPane.addTab("Arcs", arcsTab);
         tabbedPane.addTab("Nodes", nodesTab);
-        frame.getContentPane().add(tabbedPane);
+        leftPanel.add(tabbedPane, BorderLayout.LINE_END);
         
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(10, 561, 1344, 190);
-        frame.getContentPane().add(scrollPane);
+        frame.getContentPane().add(leftPanel, BorderLayout.LINE_START);
+
+        /* GA controls panel */
+        
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.setBorder(BorderFactory.createTitledBorder("GA Control Panel"));
+        rightPanel.add(createChart());
+        
+        /* GA Settings */
+        
+        rightPanel.add(GASettingsPanel.getPanel());
+        
+        frame.getContentPane().add(rightPanel, BorderLayout.LINE_END);
+        
+        /* Info box on the button */   
         
         textArea = new JTextArea();
         textArea.setEditable(false);
-        scrollPane.setViewportView(textArea);
         
-        frame.setLocationRelativeTo(null);
+        DefaultCaret caret = (DefaultCaret) textArea.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(0, 100));
+
+        frame.getContentPane().add(scrollPane, BorderLayout.PAGE_END);
+        
+        ConfigUtil.load();
+        GraphUtil.loadLastGraph();
+        GASettingsPanel.restoreSettings();
+        
         frame.setVisible(true);
     }
-    
+
     public static JFrame getFrame() {
         return frame;
     }
@@ -179,6 +261,11 @@ public class Main {
         Main.algorithmFrame = algorithmFrame;
     }
 
+    public static void writeText(String text) {
+        textArea.append(text + "\n");
+        textArea.setCaretPosition(textArea.getText().length());
+    }
+    
     public static JMenuItem getItemPrims()
     {
         return itemPrims;
@@ -187,5 +274,35 @@ public class Main {
     public static void setItemPrims(JMenuItem itemPrims)
     {
         Main.itemPrims = itemPrims;
+    }
+    
+    public static JFreeChart getChart() {
+        return chart;
+    }
+    
+    public static ChartPanel createChart() {
+        averageFitnessData = new XYSeries("Average fitness");
+        bestIndividualData = new XYSeries("Best individual");
+        
+        XYSeriesCollection collection = new XYSeriesCollection();
+        collection.addSeries(bestIndividualData);
+        collection.addSeries(averageFitnessData);
+        
+        chart = ChartFactory.createXYLineChart("Fitness data over time", "Generation", "Fitness", collection, PlotOrientation.VERTICAL, true, false, false);
+        chart.setBackgroundPaint(frame.getBackground());
+        
+        return new ChartPanel(chart);
+    }
+
+    public static XYSeries getAverageFitnessData() {
+        return averageFitnessData;
+    }
+
+    public static Network getCurrentNetwork() {
+        return currentNetwork;
+    }
+    
+    public static void setCurrentNetwork(Network currentNetwork) {
+        Main.currentNetwork = currentNetwork;
     }
 }

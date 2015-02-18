@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<network>
+  <nodes>
+    <A x="105" y="117" />
+    <B x="440" y="363" />
+    <C x="241" y="542" />
+    <D x="164" y="478" />
+    <E x="193" y="219" />
+    <F x="393" y="130" />
+    <G x="684" y="205" />
+    <H x="729" y="467" />
+    <I x="636" y="627" />
+    <J x="488" y="695" />
+    <K x="305" y="684" />
+    <L x="314" y="557" />
+    <M x="525" y="436" />
+    <N x="582" y="286" />
+    <O x="519" y="59" />
+    <P x="327" y="29" />
+    <Q x="309" y="181" />
+    <R x="310" y="332" />
+    <S x="95" y="304" />
+    <T x="56" y="521" />
+    <U x="75" y="692" />
+  </nodes>
+  <arcs>
+    <arc from="U" to="T" weight="8" />
+    <arc from="T" to="D" weight="8" />
+    <arc from="C" to="D" weight="2" />
+    <arc from="D" to="R" weight="1" />
+    <arc from="R" to="B" weight="3" />
+    <arc from="B" to="Q" weight="2" />
+    <arc from="O" to="F" weight="3" />
+    <arc from="F" to="P" weight="1" />
+    <arc from="P" to="A" weight="5" />
+    <arc from="A" to="E" weight="2" />
+    <arc from="E" to="S" weight="10" />
+    <arc from="S" to="A" weight="12" />
+    <arc from="S" to="D" weight="30" />
+    <arc from="D" to="E" weight="44" />
+    <arc from="E" to="R" weight="55" />
+    <arc from="R" to="Q" weight="66" />
+    <arc from="Q" to="F" weight="5" />
+    <arc from="F" to="N" weight="10" />
+    <arc from="N" to="B" weight="12" />
+    <arc from="B" to="M" weight="25" />
+    <arc from="M" to="H" weight="31" />
+    <arc from="H" to="G" weight="38" />
+    <arc from="G" to="N" weight="19" />
+    <arc from="N" to="O" weight="61" />
+    <arc from="O" to="G" weight="99" />
+    <arc from="O" to="P" weight="12" />
+    <arc from="P" to="Q" weight="13" />
+    <arc from="Q" to="E" weight="29" />
+    <arc from="C" to="L" weight="49" />
+    <arc from="L" to="R" weight="32" />
+    <arc from="R" to="J" weight="39" />
+    <arc from="J" to="I" weight="2" />
+    <arc from="I" to="H" weight="1" />
+    <arc from="K" to="C" weight="12" />
+    <arc from="C" to="U" weight="41" />
+    <arc from="U" to="D" weight="2" />
+    <arc from="T" to="S" weight="3" />
+    <arc from="K" to="L" weight="4" />
+    <arc from="L" to="J" weight="5" />
+    <arc from="J" to="K" weight="10" />
+    <arc from="K" to="U" weight="1" />
+    <arc from="J" to="M" weight="9" />
+    <arc from="M" to="I" weight="15" />
+    <arc from="N" to="M" weight="0" />
+    <arc from="N" to="H" weight="6" />
+    <arc from="B" to="J" weight="2" />
+    <arc from="B" to="F" weight="3" />
+  </arcs>
+</network>

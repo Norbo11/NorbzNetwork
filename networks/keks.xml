@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<network>
+  <nodes>
+    <A x="175" y="144" />
+    <B x="544" y="166" />
+    <C x="353" y="401" />
+    <D x="274" y="603" />
+  </nodes>
+  <arcs>
+    <arc from="A" to="C" weight="0" />
+    <arc from="C" to="B" weight="4" />
+    <arc from="B" to="A" weight="2" />
+    <arc from="C" to="D" weight="0" />
+  </arcs>
+</network>

@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import org.github.norbo11.norbznetwork.frames.Main;
-import org.github.norbo11.norbznetwork.network.Network;
+import org.github.norbo11.norbznetwork.network.Graph;
 import org.github.norbo11.norbznetwork.network.Node;
 
 public class NodeMouseListener implements MouseListener {
@@ -22,23 +22,23 @@ public class NodeMouseListener implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        node.setMouseOver(true);
+        node.setBold(true);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        node.setMouseOver(false);
+        node.setBold(false);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        Network network = Main.getCurrentNetwork();
+        Graph graph = Main.getCurrentNetwork();
         
         if (e.getButton() == MouseEvent.BUTTON3)
         {
-            if (network.getCurrentDrawArc() == null) network.connectNode(node);
+            if (graph.getCurrentDrawArc() == null) graph.connectNode(node);
             else {
-                network.connectCurrentArc(node);
+                graph.connectCurrentArc(node);
             }
         }
     }

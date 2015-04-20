@@ -3,16 +3,16 @@ package org.github.norbo11.norbznetwork.algorithms;
 import java.util.Collections;
 import java.util.ArrayList;
 
-import org.github.norbo11.norbznetwork.network.Network;
+import org.github.norbo11.norbznetwork.network.Graph;
 import org.github.norbo11.norbznetwork.network.Node;
 
 public class Dijkstras {
 
-    private static Network network = null;
+    private static Graph graph = null;
     
-    public static ArrayList<Node> getShortestPath(Network network, Node startNode, Node endNode) 
+    public static ArrayList<Node> getShortestPath(Graph graph, Node startNode, Node endNode) 
     { 
-        Dijkstras.network = network;
+        Dijkstras.graph = graph;
         ArrayList<Node> path = new ArrayList<Node>();
         
         startNode.setpLabel(0);        
@@ -44,7 +44,7 @@ public class Dijkstras {
         {
             if (node.getpLabel() == -1)
             {
-                int newTLabel = (startNode.getpLabel() == -1 ? 0 : startNode.getpLabel()) + network.getDuration(startNode, node);
+                double newTLabel = (startNode.getpLabel() == -1 ? 0 : startNode.getpLabel()) + graph.getDuration(startNode, node);
                 
                 if (node.gettLabel() == -1 || newTLabel < node.gettLabel())
                 {
@@ -55,7 +55,7 @@ public class Dijkstras {
         }
         
         //Find smallest T-Label in the whole network
-        ArrayList<Node> nodes = network.getNodesWithTLabels();
+        ArrayList<Node> nodes = graph.getNodesWithTLabels();
         Node smallest = nodes.size() > 0 ? nodes.get(0) : null;
         for (Node node : nodes)
         {

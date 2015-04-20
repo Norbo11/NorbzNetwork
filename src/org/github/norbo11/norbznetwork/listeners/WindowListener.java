@@ -18,12 +18,16 @@ public class WindowListener extends WindowAdapter {
         ConfigUtil.set("crossoverTechnique", GUIUtil.getSelectedRadio(GASettingsPanel.getCrossoverGroup()));
         ConfigUtil.set("mutationTechnique", GUIUtil.getSelectedRadio(GASettingsPanel.getMutationGroup()));
         ConfigUtil.set("initializationTechnique", GUIUtil.getSelectedRadio(GASettingsPanel.getInitializationGroup()));
+        ConfigUtil.set("encodingTechnique", GUIUtil.getSelectedRadio(GASettingsPanel.getEncodingGroup()));
         
         ConfigUtil.set("simulationSpeed", GASettingsPanel.getSimulationSpeed().getValue() + "");
         ConfigUtil.set("elitismOffset", GASettingsPanel.getSelectionElitismOffsetField().getText());
         ConfigUtil.set("mutationChance", GASettingsPanel.getMutationChanceField().getText());
         ConfigUtil.set("randomSeed", GASettingsPanel.getGeneralRandomSeed().getText());
         ConfigUtil.set("populationSize", GASettingsPanel.getGeneralPopulationSize().getText());
+        ConfigUtil.set("mutateElite", GASettingsPanel.getMutationMutateElite().isSelected() + "");
+        ConfigUtil.set("tournamentSize", GASettingsPanel.getSelectionTournamentSize().getText());
+
         ConfigUtil.save();
     }
 }

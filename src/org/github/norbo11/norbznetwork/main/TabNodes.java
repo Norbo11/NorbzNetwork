@@ -1,6 +1,8 @@
 package org.github.norbo11.norbznetwork.main;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -22,19 +24,25 @@ public class TabNodes extends JScrollPane {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     }
   
-    public void addNode(Node node)
+    public void addNode(final Node node)
     {        
-        JTextField field = new JTextField(3);
+        final JTextField field = new JTextField(3);
         field.setText(node.getId());
-        field.addActionListener(e -> {
-            node.setId(field.getText());
+        field.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                node.setId(field.getText());
+            }
         });
         
         JPanel container = new JPanel(new FlowLayout());
         JButton deleteButton = new JButton("X");
         deleteButton.setFocusable(false);
-        deleteButton.addActionListener(e -> {
-            Main.getCurrentNetwork().deleteNode(node);
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.getCurrentNetwork().deleteNode(node);
+            }
         });
         
         container.add(field);

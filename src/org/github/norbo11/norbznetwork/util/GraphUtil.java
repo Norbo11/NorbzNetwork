@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.github.norbo11.norbznetwork.frames.Main;
 import org.github.norbo11.norbznetwork.network.Arc;
-import org.github.norbo11.norbznetwork.network.Network;
+import org.github.norbo11.norbznetwork.network.Graph;
 import org.github.norbo11.norbznetwork.network.Node;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -35,12 +35,12 @@ public class GraphUtil {
         String lastGraph = ConfigUtil.get("lastGraph");
         
         if (lastGraph == null || lastGraph.equals("")) {
-            Main.setCurrentNetwork(new Network(""));
+            Main.setCurrentNetwork(new Graph(""));
         } else loadAndSetGraph(lastGraph);
     }
     
-    private static Network loadGraph(File file) {      
-        Network network = new Network(file.getName());
+    private static Graph loadGraph(File file) {      
+        Graph graph = new Graph(file.getName());
         
         SAXBuilder builder = new SAXBuilder();
         
@@ -56,24 +56,24 @@ public class GraphUtil {
         for (Element node : root.getChild("nodes").getChildren()) {                
             int x = Integer.valueOf(node.getAttributeValue("x"));
             int y = Integer.valueOf(node.getAttributeValue("y"));
-            network.getNodes().add(new Node(network.getNextId(), new Point(x, y), network));
+            graph.getNodes().add(new Node(graph.getNextId(), new Point(x, y), graph));
         }
         
         for (Element arc : root.getChild("arcs").getChildren()) {
             String from = arc.getAttributeValue("from");
             String to = arc.getAttributeValue("to");
-            int weight = Integer.valueOf(arc.getAttributeValue("weight"));
-            network.getArcs().add(new Arc(network.getNodeById(from), network.getNodeById(to), weight));
+            double weight = Double.valueOf(arc.getAttributeValue("weight"));
+            graph.getArcs().add(new Arc(graph.getNodeById(from), graph.getNodeById(to), weight));
         }
                 
-        return network;
+        return graph;
     }
 
-    public static void saveGraph(File file, Network network) {              
+    public static void saveGraph(File file, Graph graph) {              
         Element root = new Element("network");        
         Element nodes = new Element("nodes");
         
-        for (Node node : network.getNodes()) {
+        for (Node node : graph.getNodes()) {
             Element element = new Element(node.getId());
             
             element.setAttribute("x", ((int) node.getPoint().getX()) + "");
@@ -86,7 +86,7 @@ public class GraphUtil {
         
         Element arcs = new Element("arcs");
         
-        for (Arc arc : network.getArcs()) {
+        for (Arc arc : graph.getArcs()) {
             Element element = new Element("arc");
             
             element.setAttribute("from", arc.getStartNode().getId());

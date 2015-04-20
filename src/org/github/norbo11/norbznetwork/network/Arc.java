@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Line2D;
+import java.text.DecimalFormat;
 
 public class Arc {
     public static final Color ARC_COLOR = Node.NODE_COLOR;
@@ -15,9 +16,9 @@ public class Arc {
     private Point point2;
     private Node startNode;
     private Node endNode;
-    private int weight;
+    private double weight;
     private Color color = ARC_COLOR;
-    private boolean mouseOver;
+    private boolean bold;
     
     public Arc(Node startNode)
     {
@@ -28,7 +29,7 @@ public class Arc {
     }
     
     
-    public Arc(Node startNode, Node endNode, int weight)
+    public Arc(Node startNode, Node endNode, double weight)
     {
         this.startNode = startNode;
         this.endNode = endNode;
@@ -39,12 +40,12 @@ public class Arc {
     }
     
     
-    public boolean isMouseOver() {
-        return mouseOver;
+    public boolean isBold() {
+        return bold;
     }
 
-    public void setMouseOver(boolean mouseOver) {
-        this.mouseOver = mouseOver;
+    public void setBold(boolean bold) {
+        this.bold = bold;
     }
 
     public Color getColor() {
@@ -80,7 +81,7 @@ public class Arc {
         return point2;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
@@ -92,18 +93,22 @@ public class Arc {
     {
         g.setPaint(color);
         
-        if (mouseOver) g.setStroke(new BasicStroke(HOVER_WIDTH));
+        if (bold) g.setStroke(new BasicStroke(HOVER_WIDTH));
         else g.setStroke(new BasicStroke(1));
         
         g.draw(new Line2D.Double(point1, point2));
-        g.drawString(weight + "", (point1.x + point2.x) / 2, (point1.y + point2.y) / 2 - 4); 
+        g.drawString(getRoundedWeight() + "", (point1.x + point2.x) / 2, (point1.y + point2.y) / 2 - 4); 
     }
     
+    public String getRoundedWeight() {
+        return new DecimalFormat("#.##").format(weight);
+    }
+
+
     public String toString()
     {
         return getStartNode() + " to " + getEndNode();
     }
-
 
     public Node getNodeConnecting(Node node) {
         if (node == getEndNode()) return getStartNode();

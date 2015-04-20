@@ -9,32 +9,34 @@ import org.github.norbo11.norbznetwork.algorithms.ga.techniques.MutationTechniqu
 import org.github.norbo11.norbznetwork.algorithms.ga.techniques.SelectionTechnique;
 import org.github.norbo11.norbznetwork.frames.GASettingsPanel;
 import org.github.norbo11.norbznetwork.frames.Main;
-import org.github.norbo11.norbznetwork.network.Network;
+import org.github.norbo11.norbznetwork.network.Graph;
+import org.github.norbo11.norbznetwork.network.Node;
+import org.github.norbo11.norbznetwork.util.RandomUtil;
 
 public class Population {
     private ArrayList<Individual> individuals = new ArrayList<Individual>();
     private MutationTechnique mutationTechnique;
     private CrossoverTechnique crossoverTechnique;
     private SelectionTechnique selectionTechnique;
-    private Network parentNetwork;
+    private Graph parentNetwork;
     
-    public Population(Network network, int size, InitializationTechnique init) {
-        this.parentNetwork = network;
+    public Population() {
+
+    }
+    
+    public Population(Graph graph, int size, InitializationTechnique init) {
+        this.parentNetwork = graph;
         
         init.initialize(this, size);
     }
 
-    public Population(Network network, int size) {
-        this.parentNetwork = network;        
-    }
-    
     /* Getters and setters */
     
     public ArrayList<Individual> getIndividuals() {
         return individuals;
     }
     
-    public Network getParentNetwork() {
+    public Graph getParentNetwork() {
         return parentNetwork;
     }
 
@@ -78,7 +80,7 @@ public class Population {
         }
     }
     
-    private void sort() {
+    public void sort() {
         Collections.sort(individuals, Collections.reverseOrder());
     }
     
@@ -100,6 +102,7 @@ public class Population {
         return new ArrayList<Individual>(individuals.subList(GASettingsPanel.getElitismOffset(), individuals.size()));
     }
 
+    @SuppressWarnings("unchecked")
     public void evolve() {
         ArrayList<Individual> newIndividuals = new ArrayList<Individual>();
         
@@ -108,8 +111,8 @@ public class Population {
         
         while (newIndividuals.size() < getIndividuals().size()) {
             Individual a, b;
-            a = selectionTechnique.select();
-            b = selectionTechnique.select();
+            a = selectionTechnique.select(this);
+            b = selectionTechnique.select(this);
             
             ArrayList<Individual> children = crossoverTechnique.crossover(a, b);
             
@@ -117,18 +120,41 @@ public class Population {
         }
 
         individuals = newIndividuals;
-        recalculateAllFitness();
-        //printPopulation();
-        mutationTechnique.mutate();
-        recalculateAllFitness();
-        checkValidity();
-    }
-    
-    private void checkValidity() {
-        for (Individual individual : individuals) {
-            individual.checkValidity();
+        
+        if (GASettingsPanel.isMutateElite()) {      
+            //Replace the weakest members with mutated copies of the elite
+            sort();
+            int i = individuals.size() - 1;
+            for (Individual individual : getEliteIndividuals()) {
+                if (RandomUtil.chance((GASettingsPanel.getMutationChance()))) {  
+                    Individual copy = new Individual(individual);
+                    
+                    if (individual instanceof SimpleIndividual) {
+                        copy = new SimpleIndividual((SimpleIndividual) individual);
+                        ((SimpleIndividual) copy).setGenes(new ArrayList<Node>((ArrayList<Node>) individual.getGenes()));
+                    } else if (individual instanceof PriorityIndividual) {
+                        copy = new PriorityIndividual((PriorityIndividual) individual);
+                        ((PriorityIndividual) copy).setGenes(new ArrayList<Integer>((ArrayList<Integer>) individual.getGenes()));
+                    }
+                    
+                    mutationTechnique.mutate(copy);
+                    
+                    individuals.set(i, copy);
+                    i--;
+                }
+            }
         }
+        
+        //Mutate all non-elite individuals
+        for (Individual individual : getNonEliteIndividuals()) {
+            if (RandomUtil.chance((GASettingsPanel.getMutationChance()))) {  
+                mutationTechnique.mutate(individual);
+            }
+        }
+        
+        recalculateAllFitness();
     }
+
 
     public int getSize() {
         return individuals.size();

@@ -1,13 +1,13 @@
 package org.github.norbo11.norbznetwork.frames;
 
 import java.awt.FlowLayout;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -22,29 +22,31 @@ public class GASettingsPanel  {
     
     private static JTextField generalRandomSeed, generalPopulationSize;
     
+    private static ButtonGroup encodingGroup;
+    private static JRadioButton encodingSimple = new JRadioButton("Simple");
+    private static JRadioButton encodingPriority = new JRadioButton("Priority");
+    
     private static ButtonGroup initializationGroup;
     private static JRadioButton initializationRandom = new JRadioButton("Random");
     private static JRadioButton initializationGreedy = new JRadioButton("Greedy");
     private static JRadioButton initializationGreedyRoulette = new JRadioButton("Greedy roulette");
     
-    private static JTextField selectionElitismOffsetField;
+    private static JTextField selectionElitismOffsetField, selectionTournamentSize;
     private static ButtonGroup selectionGroup;
-    private static JRadioButton selectionBestHalf = new JRadioButton("Best half");
     private static JRadioButton selectionRouletteWheel = new JRadioButton("Roulette-wheel");
-    private static JRadioButton selectionSimulatedAnnealing = new JRadioButton("Simulated annealing");
+    private static JRadioButton selectionTournament = new JRadioButton("Tournament");
     
     private static ButtonGroup crossoverGroup;
     private static JRadioButton crossoverOrdered = new JRadioButton("Ordered");
     private static JRadioButton crossoverSinglePoint = new JRadioButton("Single-point");
     private static JRadioButton crossoverTwoPoint = new JRadioButton("Two-point");
-    private static JRadioButton crossoverCutAndSplice = new JRadioButton("Cut and splice");
     
     private static ButtonGroup mutationGroup;
     private static JTextField mutationChanceField;
     private static JRadioButton mutationSingleBit = new JRadioButton("Single-bit");
-    private static JRadioButton mutationInversion = new JRadioButton("Inversion");
     private static JRadioButton mutationSwap = new JRadioButton("Swap");
     private static JRadioButton mutationInsert = new JRadioButton("Insert");
+    private static JCheckBox mutationMutateElite = new JCheckBox("Mutate copies of elite");
     
     private static JSlider simulationSpeed;
     private static JButton stopButton;    
@@ -66,6 +68,20 @@ public class GASettingsPanel  {
         generalPanel.add(generalRandomSeed);
         
         panel.add(generalPanel);
+        
+        //Encoding
+        JPanel encodingPanel = new JPanel();
+        encodingPanel.setBorder(BorderFactory.createTitledBorder("Encoding"));
+        encodingPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        
+        encodingGroup = new ButtonGroup();
+        encodingGroup.add(encodingSimple);
+        encodingGroup.add(encodingPriority);
+        
+        encodingPanel.add(encodingSimple);
+        encodingPanel.add(encodingPriority);
+        
+        panel.add(encodingPanel);        
         
         //Initialization
         JPanel initializationPanel = new JPanel();
@@ -89,16 +105,17 @@ public class GASettingsPanel  {
         selectionPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         
         selectionElitismOffsetField = new JTextField(5);
+        selectionTournamentSize = new JTextField(5);
+        
         selectionGroup = new ButtonGroup();
-        selectionGroup.add(selectionBestHalf);
         selectionGroup.add(selectionRouletteWheel);
-        selectionGroup.add(selectionSimulatedAnnealing);
+        selectionGroup.add(selectionTournament);
         
         selectionPanel.add(new JLabel("Elite size:"));
         selectionPanel.add(selectionElitismOffsetField);
-        selectionPanel.add(selectionBestHalf);
         selectionPanel.add(selectionRouletteWheel);
-        selectionPanel.add(selectionSimulatedAnnealing);
+        selectionPanel.add(selectionTournament);
+        selectionPanel.add(selectionTournamentSize);
         
         panel.add(selectionPanel);
         
@@ -111,12 +128,10 @@ public class GASettingsPanel  {
         crossoverGroup = new ButtonGroup();
         crossoverGroup.add(crossoverSinglePoint);
         crossoverGroup.add(crossoverTwoPoint);
-        crossoverGroup.add(crossoverCutAndSplice);
         crossoverGroup.add(crossoverOrdered);
 
         crossoverPanel.add(crossoverSinglePoint);
         crossoverPanel.add(crossoverTwoPoint);
-        crossoverPanel.add(crossoverCutAndSplice);
         crossoverPanel.add(crossoverOrdered);
         
         panel.add(crossoverPanel);
@@ -130,16 +145,15 @@ public class GASettingsPanel  {
         mutationChanceField = new JTextField(5);
         mutationGroup = new ButtonGroup();
         mutationGroup.add(mutationSingleBit);
-        mutationGroup.add(mutationInversion);
         mutationGroup.add(mutationSwap);
         mutationGroup.add(mutationInsert);
         
         mutationPanel.add(new JLabel("Mutation chance:"));
         mutationPanel.add(mutationChanceField);
         mutationPanel.add(mutationSingleBit);
-        mutationPanel.add(mutationInversion);
         mutationPanel.add(mutationSwap);
         mutationPanel.add(mutationInsert);
+        mutationPanel.add(mutationMutateElite);
         
         panel.add(mutationPanel);
         
@@ -159,6 +173,14 @@ public class GASettingsPanel  {
         panel.add(simulationControls);
     }
 
+    public static JTextField getSelectionTournamentSize() {
+        return selectionTournamentSize;
+    }
+
+    public static JRadioButton getSelectionTournament() {
+        return selectionTournament;
+    }
+
     public static JPanel getPanel() {
         return panel;
     }
@@ -171,10 +193,6 @@ public class GASettingsPanel  {
         return selectionRouletteWheel;
     }
 
-    public static JRadioButton getSelectionSimulatedAnnealing() {
-        return selectionSimulatedAnnealing;
-    }
-
     public static JRadioButton getCrossoverSinglePoint() {
         return crossoverSinglePoint;
     }
@@ -183,20 +201,12 @@ public class GASettingsPanel  {
         return crossoverTwoPoint;
     }
 
-    public static JRadioButton getCrossoverCutAndSplice() {
-        return crossoverCutAndSplice;
-    }
-
     public static JTextField getMutationChanceField() {
         return mutationChanceField;
     }
 
     public static JRadioButton getMutationSingleBit() {
         return mutationSingleBit;
-    }
-
-    public static JRadioButton getMutationInversion() {
-        return mutationInversion;
     }
 
     public static JRadioButton getMutationSwap() {
@@ -209,10 +219,6 @@ public class GASettingsPanel  {
 
     public static JRadioButton getCrossoverOrdered() {
         return crossoverOrdered;
-    }
-
-    public static JRadioButton getSelectionBestHalf() {
-        return selectionBestHalf;
     }
 
     public static ButtonGroup getSelectionGroup() {
@@ -232,20 +238,30 @@ public class GASettingsPanel  {
     }
 
     public static void restoreSettings() {
-        simulationSpeed.setValue(Integer.valueOf(ConfigUtil.get("simulationSpeed")));
-        selectionElitismOffsetField.setText(ConfigUtil.get("elitismOffset"));
-        mutationChanceField.setText(ConfigUtil.get("mutationChance"));
         generalRandomSeed.setText(ConfigUtil.get("randomSeed"));
         generalPopulationSize.setText(ConfigUtil.get("populationSize"));
         
+        selectionElitismOffsetField.setText(ConfigUtil.get("elitismOffset"));
+        selectionTournamentSize.setText(ConfigUtil.get("tournamentSize"));
+        
+        mutationChanceField.setText(ConfigUtil.get("mutationChance"));
+        mutationMutateElite.setSelected(Boolean.valueOf(ConfigUtil.get("mutateElite")));
+
+        simulationSpeed.setValue(Integer.valueOf(ConfigUtil.get("simulationSpeed")));
+        
+        GUIUtil.setRadioSelected(initializationGroup, ConfigUtil.get("initializationTechnique"));
+        GUIUtil.setRadioSelected(encodingGroup, ConfigUtil.get("encodingTechnique"));
         GUIUtil.setRadioSelected(selectionGroup, ConfigUtil.get("selectionTechnique"));
         GUIUtil.setRadioSelected(crossoverGroup, ConfigUtil.get("crossoverTechnique"));
         GUIUtil.setRadioSelected(mutationGroup, ConfigUtil.get("mutationTechnique"));
-        GUIUtil.setRadioSelected(initializationGroup, ConfigUtil.get("initializationTechnique"));
     }
     
     public static ButtonGroup getInitializationGroup() {
         return initializationGroup;
+    }
+    
+    public static JCheckBox getMutationMutateElite() {
+        return mutationMutateElite;
     }
 
     public static JRadioButton getInitializationGreedy() {
@@ -285,6 +301,26 @@ public class GASettingsPanel  {
     }
 
     public static long getRandomSeed() {
-        return generalRandomSeed.getText().equals("") ? LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) : Long.valueOf(generalRandomSeed.getText());
+        return generalRandomSeed.getText().equals("") ? new Date().getTime() : Long.valueOf(generalRandomSeed.getText());
+    }
+    
+    public static boolean isMutateElite() {
+        return mutationMutateElite.isSelected();
+    }
+
+    public static int getTournamentSize() {
+        return Integer.valueOf(selectionTournamentSize.getText());
+    }
+
+    public static ButtonGroup getEncodingGroup() {
+        return encodingGroup;
+    }
+
+    public static JRadioButton getEncodingSimple() {
+        return encodingSimple;
+    }
+
+    public static JRadioButton getEncodingPriority() {
+        return encodingPriority;
     }
 }

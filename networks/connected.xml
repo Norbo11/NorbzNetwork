@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<network>
+  <nodes>
+    <A x="135" y="110" />
+    <B x="362" y="181" />
+    <C x="449" y="380" />
+    <D x="174" y="596" />
+    <E x="116" y="438" />
+    <F x="210" y="273" />
+    <G x="590" y="708" />
+    <H x="663" y="485" />
+    <I x="684" y="211" />
+    <J x="568" y="39" />
+    <K x="380" y="39" />
+    <L x="339" y="658" />
+  </nodes>
+  <arcs>
+    <arc from="A" to="B" weight="237.84448700779257" />
+    <arc from="A" to="C" weight="414.12075533592855" />
+    <arc from="A" to="D" weight="487.56230371102316" />
+    <arc from="A" to="E" weight="328.54984401152893" />
+    <arc from="A" to="F" weight="179.42686532400882" />
+    <arc from="A" to="G" weight="751.4179928641581" />
+    <arc from="A" to="H" weight="647.6179429262287" />
+    <arc from="A" to="I" weight="558.2132209111497" />
+    <arc from="A" to="J" weight="438.78240621064106" />
+    <arc from="A" to="K" weight="255.08037948850554" />
+    <arc from="A" to="L" weight="584.7392581313486" />
+    <arc from="B" to="C" weight="217.18655575334307" />
+    <arc from="B" to="D" weight="455.5974100014178" />
+    <arc from="B" to="E" weight="355.75975039343615" />
+    <arc from="B" to="F" weight="177.67385851610248" />
+    <arc from="B" to="G" weight="574.2064088809876" />
+    <arc from="B" to="H" weight="427.8048620574572" />
+    <arc from="B" to="I" weight="323.39449593337235" />
+    <arc from="B" to="J" weight="250.19992006393608" />
+    <arc from="B" to="K" weight="143.13629868066312" />
+    <arc from="B" to="L" weight="477.55418540726873" />
+    <arc from="C" to="D" weight="349.6870029040256" />
+    <arc from="C" to="E" weight="338.0133133472704" />
+    <arc from="C" to="F" weight="261.8587405453559" />
+    <arc from="C" to="G" weight="357.0224082603219" />
+    <arc from="C" to="H" weight="238.371558706151" />
+    <arc from="C" to="I" weight="289.4581144138129" />
+    <arc from="C" to="J" weight="361.1675511448945" />
+    <arc from="C" to="K" weight="347.9109081359767" />
+    <arc from="C" to="L" weight="298.97157055479374" />
+    <arc from="D" to="E" weight="168.30923919975396" />
+    <arc from="D" to="F" weight="325.0" />
+    <arc from="D" to="G" weight="430.8131845707603" />
+    <arc from="D" to="H" weight="501.43992661135394" />
+    <arc from="D" to="I" weight="639.0031298827886" />
+    <arc from="D" to="J" weight="682.2646114228702" />
+    <arc from="D" to="K" weight="593.8728820210601" />
+    <arc from="D" to="L" weight="176.26400653565094" />
+    <arc from="E" to="F" weight="189.89734068701435" />
+    <arc from="E" to="G" weight="545.5052703686739" />
+    <arc from="E" to="H" weight="549.015482477498" />
+    <arc from="E" to="I" weight="611.6804721421144" />
+    <arc from="E" to="J" weight="602.913758343596" />
+    <arc from="E" to="K" weight="478.43181332348706" />
+    <arc from="E" to="L" weight="313.2554867835518" />
+    <arc from="F" to="G" weight="577.6028047023318" />
+    <arc from="F" to="H" weight="500.1529765981604" />
+    <arc from="F" to="I" weight="478.0376554205746" />
+    <arc from="F" to="J" weight="427.69147758635546" />
+    <arc from="F" to="K" weight="289.2334697091607" />
+    <arc from="F" to="L" weight="406.0369441319349" />
+    <arc from="G" to="H" weight="234.64441182350797" />
+    <arc from="G" to="I" weight="505.811229610415" />
+    <arc from="G" to="J" weight="669.3616361877935" />
+    <arc from="G" to="K" weight="701.1854248342588" />
+    <arc from="G" to="L" weight="255.93163149560078" />
+    <arc from="H" to="I" weight="274.8035662068453" />
+    <arc from="H" to="J" weight="456.00548242318314" />
+    <arc from="H" to="K" weight="528.2092388438506" />
+    <arc from="H" to="L" weight="367.29416004069543" />
+    <arc from="I" to="J" weight="207.46083967823904" />
+    <arc from="I" to="K" weight="349.28498393145964" />
+    <arc from="I" to="L" weight="564.6538762817448" />
+    <arc from="J" to="K" weight="188.0" />
+    <arc from="J" to="L" weight="660.001515149776" />
+    <arc from="K" to="L" weight="620.3563492058415" />
+  </arcs>
+</network>

@@ -6,7 +6,7 @@ import javax.swing.event.MouseInputAdapter;
 
 import org.github.norbo11.norbznetwork.frames.EditDistanceFrame;
 import org.github.norbo11.norbznetwork.frames.Main;
-import org.github.norbo11.norbznetwork.network.Network;
+import org.github.norbo11.norbznetwork.network.Graph;
 import org.github.norbo11.norbznetwork.util.GUIUtil;
 //github.com/Norbo11/NorbzNetwork.git
 import org.github.norbo11.norbznetwork.network.Arc;
@@ -27,12 +27,12 @@ public class NetworkMouseListener extends MouseInputAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        Network network = Main.getCurrentNetwork();
+        Graph graph = Main.getCurrentNetwork();
         
         if (e.getButton() == MouseEvent.BUTTON1)
         {
             boolean intersecting = false;
-            for (Arc arc : network.getArcs())
+            for (Arc arc : graph.getArcs())
             {
                 intersecting = GUIUtil.IsIntersecting(arc.getPoint1(), arc.getPoint2(), e.getPoint(), Arc.CLICKABLE_WIDTH);
                 if (intersecting) 
@@ -41,12 +41,12 @@ public class NetworkMouseListener extends MouseInputAdapter {
                     break;
                 }
             }
-            if (!intersecting) network.addNode(e.getPoint());
+            if (!intersecting) graph.addNode(e.getPoint());
         }
         
         if (e.getButton() == MouseEvent.BUTTON3)
         {
-            network.setCurrentDrawArc(null);
+            graph.setCurrentDrawArc(null);
         }
     }
 
@@ -57,20 +57,21 @@ public class NetworkMouseListener extends MouseInputAdapter {
     
     @Override
     public void mouseMoved(MouseEvent e) {
-        Network network = Main.getCurrentNetwork();
-        
-        Arc currentArc = network.getCurrentDrawArc();
-        
-        if (currentArc != null)
-        {
-            currentArc.getPoint2().setLocation(e.getPoint());
-        }
-        
-        for (Arc arc : network.getArcs())
-        {
-            if (GUIUtil.IsIntersecting(arc.getPoint1(), arc.getPoint2(), e.getPoint(), Arc.CLICKABLE_WIDTH)) arc.setMouseOver(true);
-            else arc.setMouseOver(false);
+        if (Main.getCurrentSimulation() == null || !Main.getCurrentSimulation().isRunning()) {
+            Graph graph = Main.getCurrentNetwork();
+            
+            Arc currentArc = graph.getCurrentDrawArc();
+            
+            if (currentArc != null)
+            {
+                currentArc.getPoint2().setLocation(e.getPoint());
+            }
+            
+            for (Arc arc : graph.getArcs())
+            {
+                if (GUIUtil.IsIntersecting(arc.getPoint1(), arc.getPoint2(), e.getPoint(), Arc.CLICKABLE_WIDTH)) arc.setBold(true);
+                else arc.setBold(false);
+            }
         }
      }
-
 }

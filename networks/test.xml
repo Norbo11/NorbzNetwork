@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <network>
   <nodes>
-    <A x="135" y="123" />
-    <B x="449" y="230" />
-    <C x="217" y="420" />
-    <D x="486" y="178" />
-    <E x="479" y="408" />
+    <A x="450" y="250" />
+    <B x="291" y="146" />
+    <C x="105" y="168" />
+    <D x="160" y="345" />
+    <E x="319" y="294" />
+    <F x="39" y="449" />
   </nodes>
   <arcs>
-    <arc from="D" to="A" weight="0" />
-    <arc from="B" to="A" weight="0" />
-    <arc from="A" to="C" weight="0" />
-    <arc from="B" to="D" weight="0" />
-    <arc from="E" to="B" weight="0" />
-    <arc from="C" to="E" weight="0" />
+    <arc from="A" to="B" weight="0.0" />
+    <arc from="B" to="C" weight="0.0" />
+    <arc from="C" to="D" weight="0.0" />
+    <arc from="D" to="F" weight="0.0" />
+    <arc from="E" to="B" weight="0.0" />
+    <arc from="D" to="E" weight="0.0" />
+    <arc from="E" to="A" weight="0.0" />
   </arcs>
 </network>

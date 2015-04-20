@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 import org.github.norbo11.norbznetwork.frames.Main;
 import org.github.norbo11.norbznetwork.network.Arc;
-import org.github.norbo11.norbznetwork.network.Network;
+import org.github.norbo11.norbznetwork.network.Graph;
 import org.github.norbo11.norbznetwork.network.Node;
 
 public class NetworkPanel extends JPanel {
@@ -16,24 +16,25 @@ public class NetworkPanel extends JPanel {
     public NetworkPanel() {
         super(null); //Needed to set the layout to null
     }
-    
+
     @Override
     public void paint(Graphics graphics) {
         super.paintComponent(graphics);
-        
-        Network network = Main.getCurrentNetwork();
-        
+
         Graphics2D g = (Graphics2D) graphics;
         
-        for (Node node : network.getNodes())
+        Graph graph = Main.getCurrentNetwork();
+        
+        
+        for (Node node : graph.getNodes())
         {
             node.draw(g);
         }
         
-        Arc currentArc = network.getCurrentDrawArc();
+        Arc currentArc = graph.getCurrentDrawArc();
         if (currentArc != null) currentArc.draw(g);
         
-        for (Arc arc : network.getArcs())
+        for (Arc arc : graph.getArcs())
         {
             arc.draw(g);
         }

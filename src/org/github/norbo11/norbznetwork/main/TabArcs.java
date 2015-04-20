@@ -1,6 +1,8 @@
 package org.github.norbo11.norbznetwork.main;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -23,7 +25,7 @@ public class TabArcs extends JScrollPane {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     }
   
-    public void addArc(Arc arc)
+    public void addArc(final Arc arc)
     {
         JLabel label = new JLabel(arc.toString());
         
@@ -33,8 +35,11 @@ public class TabArcs extends JScrollPane {
         JPanel container = new JPanel(new FlowLayout());
         JButton deleteButton = new JButton("X");
         deleteButton.setFocusable(false);
-        deleteButton.addActionListener(e -> {
-            Main.getCurrentNetwork().deleteArc(arc);
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.getCurrentNetwork().deleteArc(arc);
+            }
         });
 
         container.add(label);

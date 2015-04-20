@@ -3,28 +3,28 @@ package org.github.norbo11.norbznetwork.algorithms;
 import java.util.ArrayList;
 
 import org.github.norbo11.norbznetwork.network.Arc;
-import org.github.norbo11.norbznetwork.network.Network;
+import org.github.norbo11.norbznetwork.network.Graph;
 import org.github.norbo11.norbznetwork.network.Node;
 
 public class Prims {
     private static ArrayList<Node> minNodes = null;
     private static ArrayList<Arc> minArcs = null;
-    private static Network network = null;
+    private static Graph graph = null;
     
-    public static Network getMinimumSpanningTree(Network network)
+    public static Graph getMinimumSpanningTree(Graph graph)
     {
-        Prims.network = network;
+        Prims.graph = graph;
         
         minNodes = new ArrayList<Node>();
         minArcs = new ArrayList<Arc>();
-        minNodes.add(network.getNodes().get(0));
+        minNodes.add(graph.getNodes().get(0));
         
         
-        network = new Network(minNodes, minArcs, network.getFilename());
+        graph = new Graph(minNodes, minArcs, graph.getFilename());
         
         formTree();
         
-        return network;
+        return graph;
     }
     
     private static ArrayList<Arc> getArcsInMinTree()
@@ -33,7 +33,7 @@ public class Prims {
         
         for (Node node : minNodes)
         {
-            ArrayList<Arc> connectedArcs = network.getAllConnectedArcs(node);
+            ArrayList<Arc> connectedArcs = graph.getAllConnectedArcs(node);
             for (Arc connectedArc : connectedArcs)
             {
                 if (!arcs.contains(connectedArc) && (!minNodes.contains(connectedArc.getStartNode()) || !minNodes.contains(connectedArc.getEndNode()))) arcs.add(connectedArc);
@@ -83,6 +83,6 @@ public class Prims {
     
     private static boolean isSpanning()
     {
-        return minNodes.containsAll(network.getNodes());
+        return minNodes.containsAll(graph.getNodes());
     }
 }

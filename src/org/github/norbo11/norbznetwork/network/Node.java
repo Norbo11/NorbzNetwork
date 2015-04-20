@@ -16,18 +16,19 @@ public class Node {
     public static final int CLICKABLE_DIAMETER = 30;
     public static final Color NODE_COLOR = Color.DARK_GRAY;
     public static final Color NODE_PATH_COLOR = Color.RED;
+    public static final Color NODE_PATH_START_COLOR = Color.BLUE;
     
     private String id;
     private Point point;
     private JPanel panel;
-    private boolean mouseOver;
-    private int pLabel = -1;
-    private int tLabel = -1;
+    private boolean bold;
+    private double pLabel = -1;
+    private double tLabel = -1;
     private Node bestFrom = null;
     private Color color = NODE_COLOR;
-    private Network parent;
+    private Graph parent;
     
-    public Node(String id, Point point, Network parent)
+    public Node(String id, Point point, Graph parent)
     {
         this.id = id;
         this.point = new Point(point);
@@ -45,7 +46,7 @@ public class Node {
     
     /* Getters and setters */    
 
-    public Network getParent() {
+    public Graph getParent() {
         return parent;
     }
 
@@ -69,28 +70,28 @@ public class Node {
         this.bestFrom = bestFrom;
     }
 
-    public int getpLabel() {
+    public double getpLabel() {
         return pLabel;
     }
 
-    public int gettLabel() {
+    public double gettLabel() {
         return tLabel;
     }
 
-    public void setpLabel(int pLabel) {
+    public void setpLabel(double pLabel) {
         this.pLabel = pLabel;
     }
 
-    public void settLabel(int tLabel) {
+    public void settLabel(double tLabel) {
         this.tLabel = tLabel;
     }
 
-    public boolean isMouseOver() {
-        return mouseOver;
+    public boolean isBold() {
+        return bold;
     }
 
-    public void setMouseOver(boolean mouseOver) {
-        this.mouseOver = mouseOver;
+    public void setBold(boolean bold) {
+        this.bold = bold;
     }
 
     public String getId() {
@@ -107,7 +108,7 @@ public class Node {
         double width = 0;
         double height = 0;
         
-        if (!mouseOver)
+        if (!bold)
         {
             width = DIAMETER;
             height = DIAMETER;
@@ -124,19 +125,23 @@ public class Node {
         g.fill(new Ellipse2D.Double(x, y, width, height));
     }
     
-    public ArrayList<Node> getNeighbouringNodes()
+    public ArrayList<Node> getNeighbouringNodes() {
+        return getNeighbouringNodes(new ArrayList<Node>());
+    }
+    
+    public ArrayList<Node> getNeighbouringNodes(ArrayList<Node> ignore)
     {
         ArrayList<Node> connections = new ArrayList<>();
         for (Arc arc : parent.getArcs())
         {
             if (arc.getStartNode() == this)
             {
-                if (!connections.contains(arc.getEndNode())) connections.add(arc.getEndNode());
+                if (!connections.contains(arc.getEndNode()) && !ignore.contains(arc.getEndNode())) connections.add(arc.getEndNode());
             }
             
             if (arc.getEndNode() == this)
             {
-                if (!connections.contains(arc.getStartNode())) connections.add(arc.getStartNode());
+                if (!connections.contains(arc.getStartNode()) && !ignore.contains(arc.getStartNode())) connections.add(arc.getStartNode());
             }
         }
         return connections;
